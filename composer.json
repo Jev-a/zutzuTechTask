@@ -1,0 +1,13 @@
+{
+    "name": "remote/task",
+    "description": "\"remote test task\"",
+    "minimum-stability": "stable",
+    "require": {
+        "guzzlehttp/guzzle": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "zutzuTechTask\\": ""
+        }
+    }
+}
