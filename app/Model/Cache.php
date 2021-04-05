@@ -1,8 +1,8 @@
 <?php
 
-namespace zutzuTechTask\app\Model;
+namespace ZTT\app\Model;
 
-use zutzuTechTask\app\CacheInterface;
+use ZTT\app\CacheInterface;
 
 class Cache implements CacheInterface
 {
@@ -17,7 +17,7 @@ class Cache implements CacheInterface
      */
     public function set(string $key, $value, int $duration)
     {
-        $this->setFileName('cache/'.$key.'_'.$duration);
+        $this->setFileName(ROOT . '/../cache/'.$key.'_'.$duration);
         file_put_contents($this->getFileName(), $value);
     }
 
@@ -28,11 +28,17 @@ class Cache implements CacheInterface
      */
     public function get(string $key)
     {
+        return file_get_contents(ROOT . '/../cache/606b723ab59f7_300');
         if (file_exists('cache/'.$key)) {
            return readfile('cache/'.$key);
         }
 
         return null;
+//        if (file_exists('cache/'.$key)) {
+//           return readfile('cache/'.$key);
+//        }
+//
+//        return null;
     }
 
     /**
