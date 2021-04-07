@@ -9,7 +9,7 @@ class OrganizationController
     public function listAction()
     {
         $organisationList =  (new \ZTT\app\Service\OrganizationService())->getList();
-        include(ROOT . '/../templates/index.html');
+        include(ROOT . '/../templates/index.phtml');
         return true;
     }
 

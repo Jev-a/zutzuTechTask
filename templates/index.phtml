@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap 4 Website Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .btn-info {
+            color: #fff;
+            background-color: #17a2b8;
+            border-radius: 35px;
+            border: 1px solid rgba(23, 162, 184, 0.75);
+        }
+        .btn-danger {
+            color: #fff;
+            background-color: #dc3545;
+            border-radius: 35px;
+            border: 1px solid rgba(220, 53, 69, 0.75);
+        }
+        .btn-danger:hover {opacity: 0.6}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark ">
+        <a class="navbar-brand" href="#">Organizations</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <button type="button" class="btn btn-info my-2 fixed-top" style="display: block; margin-left: auto;">Download more</button>
+    </nav>
+    <div class="container" style="margin-top:30px">
+        <?php
+        if(!empty($organisationList)) {
+            foreach( $organisationList as $section => $title) {
+                require('organization.phtml');
+            }
+        ?>
+        <div  class="mx-auto my-2 my-sm-3 my-lg-4 p-3">
+            <button type="button" class="btn btn-danger " style="display: block; margin-right: auto;">Delete list</button>
+            <!--        <button type="button" class="btn btn-primary btn-block">Button 1</button>-->
+        </div>
+        <?php } ?>
+    </div>
+</body>
+</html>
