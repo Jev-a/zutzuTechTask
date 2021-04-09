@@ -38,7 +38,7 @@ class CacheSaveAction
             if ($result) {
                 $key = $this->organizationService->getLastOrganizationId($result);
                 if (!$this->cache->exists($key)) {
-                    $this->cache->set($key, $result, 60);
+                    $this->cache->set($key, $result, 300);
                 }
             }
         } catch (RequestException $exception) {
