@@ -1,8 +1,6 @@
 <?php
 
-
 namespace ZTT\app\Service;
-
 
 use ZTT\app\Model\Cache;
 use ZTT\app\Model\Organization;
@@ -21,19 +19,37 @@ class OrganizationService
     }
 
     /**
-     * @return array
+     * @return array|false
      */
-    public function getList(): array
+    public function getList()
     {
-        $jsonData = $this->cache->get('ddfdf');
-        $organizations = json_decode($jsonData, true);
-        $organizationsList = [];
-
-        foreach ($organizations as $organization => $fields) {
-            $organizationsList[] = new Organization($fields);
+        $files = $this->cache->getAllFilesName();
+        if (empty($files)) {
+            return false;
         }
 
+        $organizationsList = [];
+        foreach ($files as $file) {
+            $jsonData = $this->cache->get($file);
+            $organizations = json_decode($jsonData, true);
+
+            if (is_array($organizations)){
+                foreach ($organizations as $organization => $fields) {
+                    $organizationsList[] = new Organization($fields);
+                }
+            }
+        }
         return $organizationsList;
     }
 
+    /**
+     * @param string $data
+     * @return mixed
+     */
+    public function getLastOrganizationId(string $data): int
+    {
+        $items = json_decode($data,true);
+        $ids = array_column($items, 'id');
+        return max($ids);
+    }
 }

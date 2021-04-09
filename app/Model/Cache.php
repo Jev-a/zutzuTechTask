@@ -17,7 +17,7 @@ class Cache implements CacheInterface
      */
     public function set(string $key, $value, int $duration)
     {
-        $this->setFileName(ROOT . '/../cache/'.$key.'_'.$duration);
+        $this->setFileName(ROOT.'/../cache/'.$key.'_'.$duration);
         file_put_contents($this->getFileName(), $value);
     }
 
@@ -28,17 +28,7 @@ class Cache implements CacheInterface
      */
     public function get(string $key)
     {
-        return file_get_contents(ROOT . '/../cache/606b723ab59f7_300');
-        if (file_exists('cache/'.$key)) {
-           return readfile('cache/'.$key);
-        }
-
-        return null;
-//        if (file_exists('cache/'.$key)) {
-//           return readfile('cache/'.$key);
-//        }
-//
-//        return null;
+        return file_get_contents(ROOT.'/'.$key);
     }
 
     /**
@@ -57,18 +47,80 @@ class Cache implements CacheInterface
         $this->fileName = $fileName;
     }
 
-    public function delete(string $key)
+    /**
+     * @param string $key
+     * @return bool
+     */
+    public function delete(string $key): bool
     {
-        // TODO: Implement delete() method.
+        return unlink(ROOT.'/'.$key);
     }
 
-    public function exists(string $key)
+    /**
+     * @param string $key
+     * @return bool
+     */
+    public function exists(string $key): bool
     {
-        // TODO: Implement exists() method.
+        $flags = $this->getCacheFlags();
+        if (empty($flags)) {
+            return false;
+        }
+
+        return array_key_exists($key, $flags);
     }
 
+    /**
+     * @return mixed|void
+     */
     public function clear()
     {
-        // TODO: Implement clear() method.
+        $files = $this->getAllFilesName();
+        if (!empty($files)) {
+            foreach($files as $file)
+            {
+                $this->delete($file);
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getCacheFlags(): array
+    {
+        $flags = [];
+        $files = $this->getAllFilesName();
+        foreach($files as $file)
+        {
+            $fileName = substr(strrchr($file, "/"),1);
+            $flag = explode('_', $fileName);
+            $flags[] = $flag[0];
+        }
+        return $flags;
+    }
+
+    /**
+     * @return array|false
+     */
+    public function getAllFilesName()
+    {
+        return glob('../cache/*');
+    }
+
+    /**
+     * @return array|false
+     */
+    public function deleteByTimeout()
+    {
+        $files = $this->getAllFilesName();
+        foreach($files as $file)
+        {
+            $liveTime = substr(strrchr($file, "_"),1);
+            if(filemtime($file) <= strtotime('-'.$liveTime.' seconds'))
+            {
+                $this->delete($file);
+            }
+        }
     }
 }

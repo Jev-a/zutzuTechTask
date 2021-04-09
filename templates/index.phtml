@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap 4 Website Example</title>
+    <title>Organization</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <style>
         .btn-info {
             color: #fff;
@@ -26,25 +25,35 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark ">
-        <a class="navbar-brand" href="#">Organizations</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <button type="button" class="btn btn-info my-2 fixed-top" style="display: block; margin-left: auto;">Download more</button>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="#"> Organizations </a>
+        <form action="/downloadMore" method="post">
+            <button type="submit" class="btn btn-info my-2 fixed-top" style="display: block; margin-left: auto;">Download more</button>
+        </form>
     </nav>
     <div class="container" style="margin-top:30px">
         <?php
         if(!empty($organisationList)) {
             foreach( $organisationList as $section => $title) {
-                require('organization.phtml');
+                require('organization.html');
             }
         ?>
-        <div  class="mx-auto my-2 my-sm-3 my-lg-4 p-3">
-            <button type="button" class="btn btn-danger " style="display: block; margin-right: auto;">Delete list</button>
-            <!--        <button type="button" class="btn btn-primary btn-block">Button 1</button>-->
-        </div>
+
+        <form action="/clearCache" method="post">
+            <div  class="mx-auto my-2 my-sm-3 my-lg-4 p-3">
+                <button type="submit" class="btn btn-danger " style="display: block; margin-right: auto;">Delete list</button>
+                <!--        <button type="button" class="btn btn-primary btn-block">Button 1</button>-->
+            </div>
+        </form>
         <?php } ?>
     </div>
+<script>
+    setTimeout(function () {
+        $.post( "/delete");
+        console.log('sendcheck');
+        window.location.reload(true);
+    }, 0.5 * 60 * 1000);
+
+</script>
 </body>
 </html>

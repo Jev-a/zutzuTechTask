@@ -1,5 +1,5 @@
 <?php
-namespace zutzuTechTask\app;
+namespace ZTT\app;
 
 interface  CacheInterface
 {

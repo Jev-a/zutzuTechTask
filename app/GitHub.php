@@ -1,6 +1,6 @@
 <?php
 
-namespace zutzuTechTask\app;
+namespace ZTT\app;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -62,10 +62,7 @@ class GitHub
     }
 
     /**
-     * @param array $data
-     *
-     * @return mixed
-     *
+     * @return string
      * @throws GuzzleException
      */
     public function getGetData(): string

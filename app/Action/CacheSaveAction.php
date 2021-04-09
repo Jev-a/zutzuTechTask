@@ -1,13 +1,12 @@
 <?php
 
-
 namespace ZTT\app\Action;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use ZutzuTechTask\app\CacheInterface;
 use ZTT\app\GitHub;
 use ZTT\app\Model\Cache;
+use ZTT\app\Service\OrganizationService;
 
 class CacheSaveAction
 {
@@ -15,74 +14,35 @@ class CacheSaveAction
     private $cache;
     /** @var GitHub */
     private $client;
+    /** @var OrganizationService  */
+    private $organizationService;
 
-    public function __construct(Cache $cache)
+    public function __construct()
     {
-        $this->cache = $cache;
+        $this->cache = new Cache();
         $this->client = new GitHub();
+        $this->organizationService = new OrganizationService();
     }
 
     /**
+     * @param string $method
      * @return string
-     *
      * @throws GuzzleException
      */
-    public function fire()
+    public function fire(string $method)
     {
         try {
-            $this->client->setMethod('/organizations');
+            $this->client->setMethod($method);
             $result = $this->client->getGetData();
 
             if ($result) {
-                $this->cache->set(uniqid(), $result, 300);
-
-                return 'Data is cached. File path: ' . $this->cache->getFileName();
+                $key = $this->organizationService->getLastOrganizationId($result);
+                if (!$this->cache->exists($key)) {
+                    $this->cache->set($key, $result, 60);
+                }
             }
         } catch (RequestException $exception) {
             throw new RequestException($exception->getMessage());
         }
     }
 }
-
-//
-//namespace ZutzuTechTask\app\Action;
-//
-//use GuzzleHttp\Exception\GuzzleException;
-//use GuzzleHttp\Exception\RequestException;
-//use ZutzuTechTask\app\CacheInterface;
-//use ZutzuTechTask\app\GitHub;
-//
-//class CacheSaveAction
-//{
-//    /** @var CacheInterface */
-//    private $cache;
-//    /** @var GitHub */
-//    private $client;
-//
-//    public function __construct(CacheInterface $cache)
-//    {
-//        $this->cache = $cache;
-//        $this->client = new GitHub();
-//    }
-//
-//    /**
-//     * @return string
-//     *
-//     * @throws GuzzleException
-//     */
-//    public function fire()
-//    {
-//        try {
-//            $this->client->setMethod('/organizations');
-//            $result = $this->client->getGetData();
-//
-//            if ($result) {
-//                $this->cache->set(uniqid(), $result, 300);
-//
-//                return 'Data is cached. File path: ' . $this->cache->getFileName();
-//            }
-//        } catch (RequestException $exception) {
-//           throw new RequestException($exception->getMessage());
-//        }
-//    }
-//}

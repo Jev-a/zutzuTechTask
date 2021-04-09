@@ -3,12 +3,11 @@
     "description": "\"remote test task\"",
     "minimum-stability": "stable",
     "require": {
-        "guzzlehttp/guzzle": "^7.2",
-        "php-di/php-di": "^6.3"
+        "guzzlehttp/guzzle": "^7.2"
     },
     "autoload": {
         "psr-4": {
-            "ZutzuTechTask\\": ""
+            "ZTT\\": ""
         }
     }
 }
